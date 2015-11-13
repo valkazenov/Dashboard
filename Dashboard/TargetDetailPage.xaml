@@ -1,0 +1,93 @@
+﻿<Page x:Class="Dashboard.TargetDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="800"
+	Title="TARGET DETAILS">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid x:Name="TargetEditForm">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="18*"/>
+                <ColumnDefinition Width="10*" MinWidth="100" MaxWidth="150"/>
+                <ColumnDefinition Width="14*" MinWidth="150" MaxWidth="250"/>
+                <ColumnDefinition Width="18*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="Year" Style="{StaticResource LabelStyle}"/>
+            <ComboBox x:Name="YearComboBox" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Path=YearList}" SelectedItem="{Binding Path=Year}" Style="{StaticResource InputStyle}"/>
+            <TextBlock Grid.Column="1" Grid.Row="2" Text="Quarter" Style="{StaticResource LabelStyle}"/>
+            <ComboBox x:Name="QuarterComboBox" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Path=QuarterList}" SelectedItem="{Binding Path=Quarter}" Style="{StaticResource InputStyle}"/>
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="Sum" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="SummInput" Grid.Column="2" Grid.Row="3" Text="{Binding Path=Summ}" Style="{StaticResource InputStyle}"/>
+            <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Path=Month1Name}" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="Month1WeightInput" Grid.Column="2" Grid.Row="4" Text="{Binding Path=Month1Weight}" Style="{StaticResource InputStyle}"/>
+            <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Path=Month2Name}" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="Month2WeightInput" Grid.Column="2" Grid.Row="5" Text="{Binding Path=Month2Weight}" Style="{StaticResource InputStyle}"/>
+            <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding Path=Month3Name}" Style="{StaticResource LabelStyle}"/>
+            <TextBox x:Name="Month3WeightInput" Grid.Column="2" Grid.Row="6" Text="{Binding Path=Month3Weight}" Style="{StaticResource InputStyle}"/>
+            <TextBlock Grid.Column="1" Grid.Row="7" Text="Color" Style="{StaticResource LabelStyle}"/>
+            <wpfTool:ColorPicker x:Name="ColorComboBox" Grid.Column="2" Grid.Row="7" DisplayColorAndName="True" SelectedColor="{Binding Path=Color}" Style="{StaticResource InputStyle}"/>
+            <TextBlock Grid.Column="1" Grid.Row="8" Text="Start Color" Style="{StaticResource LabelStyle}"/>
+            <wpfTool:ColorPicker x:Name="StartColorComboBox" Grid.Column="2" Grid.Row="8" DisplayColorAndName="True" SelectedColor="{Binding Path=StartColor}" Style="{StaticResource InputStyle}"/>
+            <TextBlock Grid.Column="1" Grid.Row="9" Text="Additional Targets" Style="{StaticResource LabelStyle}"/>
+            <ListView x:Name="AddChartList" Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="2" Height="150" ItemsSource="{Binding Path=AddChartList}" ItemContainerStyle="{StaticResource EmbListViewItemStyle}" Margin="0,1,0,9" MouseDoubleClick="AddChartList_MouseDoubleClick" SelectionChanged="AddChartList_SelectionChanged">
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource EmbListViewHeaderStyle}">
+                        <GridView.Columns>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}" Width="120" />
+                            <GridViewColumn Header="Coeff" DisplayMemberBinding="{Binding Path=Coeff}" Width="90" />
+                            <GridViewColumn Header="Color" Width="60">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Rectangle Height="16" Fill="{Binding Path=Color, Converter={StaticResource NullColorToShapeConverter}}" HorizontalAlignment="Stretch"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="2" HorizontalAlignment="Left" Orientation="Horizontal">
+                <Button x:Name="AddChartButton" Style="{StaticResource UsualButtonStyle}" Click="AddChartButton_Click">
+                    <fa:FontAwesome Icon="Plus" />
+                </Button>
+                <Button x:Name="EditChartButton" IsEnabled="{Binding ElementName=AddChartList, Path=SelectedItem, Converter={StaticResource NullToBoolConverter}}" Style="{StaticResource UsualButtonStyle}" Click="EditChartButton_Click">
+                    <fa:FontAwesome Icon="Edit" />
+                </Button>
+                <Button x:Name="DeleteChartButton" IsEnabled="{Binding ElementName=AddChartList, Path=SelectedItem, Converter={StaticResource NullToBoolConverter}}" Style="{StaticResource UsualButtonStyle}" Click="DeleteChartButton_Click">
+                    <fa:FontAwesome Icon="Minus" />
+                </Button>
+                <Button x:Name="MoveUpChartButton" Style="{StaticResource UsualButtonStyle}" Click="MoveUpChartButton_Click">
+                    <fa:FontAwesome Icon="AngleDoubleUp" />
+                </Button>
+                <Button x:Name="MoveDownChartButton" Style="{StaticResource UsualButtonStyle}" Click="MoveDownChartButton_Click">
+                    <fa:FontAwesome Icon="AngleDoubleDown" />
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Grid.Row="12" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,20,0,0">
+                <Button x:Name="SubmitButton" Content="Submit" Style="{StaticResource ActiveButtonStyle}" IsDefault="True" Click="SubmitButton_Click"/>
+                <Button x:Name="CancelButton" Content="Cancel" Style="{StaticResource UsualButtonStyle}" IsCancel="True" Click="CancelButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>FontAwesome.WPF</id>
+    <version>4.4.0.6</version>
+    <authors>charri</authors>
+    <owners>charri</owners>
+    <licenseUrl>https://github.com/charri/Font-Awesome-WPF/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/charri/Font-Awesome-WPF/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/charri/Font-Awesome-WPF/master/doc/fa-flag.64x64.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>WPF controls for the iconic font and CSS toolkit Font Awesome.
+For examples https://github.com/charri/Font-Awesome-WPF
+
+Font Awesome: http://fortawesome.github.io/Font-Awesome/</description>
+    <releaseNotes>* Add rotate / flip support
+* Custom spin duration</releaseNotes>
+    <tags>fontawesome</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework="" />
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

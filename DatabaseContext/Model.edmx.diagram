@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="01c4848e1d434e67a273202b1e2a207d" Name="Diagram1">
+        <EntityTypeShape EntityType="MainContextModels.User" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MainContextModels.TargetChart" Width="1.5" PointX="5.625" PointY="1.125" />
+        <EntityTypeShape EntityType="MainContextModels.Target" Width="1.5" PointX="3.375" PointY="1" />
+        <AssociationConnector Association="MainContextModels.fk_TargetCharts_TargetId" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

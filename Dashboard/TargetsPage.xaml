@@ -1,0 +1,85 @@
+﻿<Page x:Class="Dashboard.TargetsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="1000"
+	Title="TARGETS" Loaded="Page_Loaded">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="30*" MinWidth="250"/>
+            <ColumnDefinition Width="10*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="1" Grid.Row="0"  HorizontalAlignment="Left" Margin="0,20,0,0" Orientation="Horizontal">
+            <Button x:Name="AddButton" Content="Add" Style="{StaticResource UsualButtonStyle}" Click="AddButton_Click"/>
+            <Button x:Name="EditButton" Content="Edit" IsEnabled="{Binding ElementName=UserList, Path=SelectedItem, Converter={StaticResource NullToBoolConverter}}" Style="{StaticResource UsualButtonStyle}" Click="EditButton_Click"/>
+            <Button x:Name="DeleteButton" Content="Delete" IsEnabled="{Binding ElementName=UserList, Path=SelectedItem, Converter={StaticResource NullToBoolConverter}}" Style="{StaticResource UsualButtonStyle}" Click="DeleteButton_Click"/>
+        </StackPanel>
+        <ListView x:Name="TargetList" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,20,0,20" ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                  GridViewColumnHeader.Click="TargetList_HeaderClick" MouseDoubleClick="TargetList_MouseDoubleClick">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource ListViewHeaderStyle}">
+                    <GridView.Columns>
+                        <GridViewColumn Header="Year" DisplayMemberBinding="{Binding Path=Year}" Width="70">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Year}" TextAlignment="Center"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Quarter" Width="70">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Quarter}" TextAlignment="Center"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Sum" Width="110">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Summ, StringFormat='#,#.00'}" TextAlignment="Right"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Weight 1" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Month1Weight}" TextAlignment="Right"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Weight 2" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Month2Weight}" TextAlignment="Right"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Weight 3" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Month3Weight}" TextAlignment="Right"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Color" Width="60">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Rectangle Height="16" Fill="{Binding Path=Color, Converter={StaticResource NullColorToShapeConverter}}" HorizontalAlignment="Stretch"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Page>

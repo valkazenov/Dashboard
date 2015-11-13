@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MainContextModels.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TargetCharts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TargetId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="Coeff" Type="float" Nullable="false" />
+          <Property Name="Color" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Targets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Quarter" Type="int" Nullable="false" />
+          <Property Name="Summ" Type="numeric" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="Month1Weight" Type="float" Nullable="false" />
+          <Property Name="Month2Weight" Type="float" Nullable="false" />
+          <Property Name="Month3Weight" Type="float" Nullable="false" />
+          <Property Name="Color" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="StartColor" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoginName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Role" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_TargetCharts_TargetId">
+          <End Role="Targets" Type="Self.Targets" Multiplicity="1" />
+          <End Role="TargetCharts" Type="Self.TargetCharts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Targets">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TargetCharts">
+              <PropertyRef Name="TargetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MainContextModelsStoreContainer">
+          <EntitySet Name="TargetCharts" EntityType="Self.TargetCharts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Targets" EntityType="Self.Targets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_TargetCharts_TargetId" Association="Self.fk_TargetCharts_TargetId">
+            <End Role="Targets" EntitySet="Targets" />
+            <End Role="TargetCharts" EntitySet="TargetCharts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MainContextModels" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MainContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="MainContextModels.User" />
+          <EntitySet Name="TargetCharts" EntityType="MainContextModels.TargetChart" />
+          <EntitySet Name="Targets" EntityType="MainContextModels.Target" />
+          <AssociationSet Name="fk_TargetCharts_TargetId" Association="MainContextModels.fk_TargetCharts_TargetId">
+            <End Role="Targets" EntitySet="Targets" />
+            <End Role="TargetCharts" EntitySet="TargetCharts" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TargetChart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TargetId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="Coeff" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Targets" Relationship="MainContextModels.fk_TargetCharts_TargetId" FromRole="TargetCharts" ToRole="Targets" />
+          <Property Name="Color" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Target">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Quarter" Type="Int32" Nullable="false" />
+          <Property Name="Summ" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="Month1Weight" Type="Double" Nullable="false" />
+          <Property Name="Month2Weight" Type="Double" Nullable="false" />
+          <Property Name="Month3Weight" Type="Double" Nullable="false" />
+          <NavigationProperty Name="TargetCharts" Relationship="MainContextModels.fk_TargetCharts_TargetId" FromRole="Targets" ToRole="TargetCharts" />
+          <Property Name="Color" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartColor" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="fk_TargetCharts_TargetId">
+          <End Type="MainContextModels.Target" Role="Targets" Multiplicity="1" />
+          <End Type="MainContextModels.TargetChart" Role="TargetCharts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Targets">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TargetCharts">
+              <PropertyRef Name="TargetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MainContextModelsStoreContainer" CdmEntityContainer="MainContext">
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MainContextModels.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TargetCharts">
+            <EntityTypeMapping TypeName="MainContextModels.TargetChart">
+              <MappingFragment StoreEntitySet="TargetCharts">
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Coeff" ColumnName="Coeff" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TargetId" ColumnName="TargetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Targets">
+            <EntityTypeMapping TypeName="MainContextModels.Target">
+              <MappingFragment StoreEntitySet="Targets">
+                <ScalarProperty Name="StartColor" ColumnName="StartColor" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Month3Weight" ColumnName="Month3Weight" />
+                <ScalarProperty Name="Month2Weight" ColumnName="Month2Weight" />
+                <ScalarProperty Name="Month1Weight" ColumnName="Month1Weight" />
+                <ScalarProperty Name="Summ" ColumnName="Summ" />
+                <ScalarProperty Name="Quarter" ColumnName="Quarter" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
