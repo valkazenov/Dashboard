@@ -23,6 +23,7 @@ namespace Dashboard
     {
         private ChartViewModel model;
 
+
         public DayChartPage(ChartViewModel model)
         {
             InitializeComponent();
