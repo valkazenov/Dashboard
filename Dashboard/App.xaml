@@ -174,5 +174,6 @@
         <util:NullToBoolConverter x:Key="NullToBoolConverter" />
         <util:NullColorToShapeConverter x:Key="NullColorToShapeConverter" />
         <model:DateTypeToVisibilityConverter x:Key="DateTypeToVisibilityConverter" />
+        <model:CalendarDayConverter x:Key="CalendarDayConverter" />
     </Application.Resources>
 </Application>

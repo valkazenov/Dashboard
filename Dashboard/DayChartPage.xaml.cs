@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Controls.DataVisualization.Charting;
 using Dashboard.Models;
+using Utilities;
 
 namespace Dashboard
 {
@@ -21,19 +23,34 @@ namespace Dashboard
     /// </summary>
     public partial class DayChartPage : Page
     {
-        private ChartViewModel model;
-
+        private ChartViewModel viewModel;
 
         public DayChartPage(ChartViewModel model)
         {
             InitializeComponent();
-            this.model = model;
+            viewModel = model;
         }
 
         public void Refresh()
         {
-            DateLabel.Text = model.WorkDate.ToString();
-            PlanLabel.Text = model.Target != null ? model.Target.Summ.ToString() : "";
+            var lastItem = viewModel.ChartDataList.Last();
+            var model = new DayChartModel();
+            model.Year = viewModel.WorkDate.Year;
+            model.Quarter = viewModel.Quarter;
+            model.PlanColor = viewModel.Target != null ? CommonHelper.StringToColor(viewModel.Target.Color) : default(Color);
+            model.FactColor = lastItem.TargetColor;
+            model.FactLevel = lastItem.TargetName;
+            model.PlanColumns = viewModel.ChartDataList.Select(i => new DayChartColumn() { Date = i.Day.ToString("dd.MM"), Percent = i.TotalPlanPercent }).ToList();
+            model.FactColumns = viewModel.ChartDataList.Select(i => new DayChartColumn() { Date = i.Day.ToString("dd.MM"), Percent = i.TotalFactPercent }).ToList();
+            model.YAxisInterval = Math.Max(lastItem.TotalPlanPercent, lastItem.TotalFactPercent) > 10 ? 10 : 1;
+            DayForm.DataContext = model;
+            PlanSeries.ItemsSource = model.PlanColumns;
+            FactSeries.ItemsSource = model.FactColumns;
+            /*XAxis.IntervalType = DateTimeIntervalType.Days;
+            XAxis.Interval = model.XAxisInterval;*/
+            YAxis.Interval = model.YAxisInterval;
+            PlanSeries.Background = new SolidColorBrush(model.PlanColor);
+            FactSeries.Background = new SolidColorBrush(model.FactColor);
         }
     }
 }

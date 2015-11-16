@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="MainContextModels.TargetChart" Width="1.5" PointX="5.625" PointY="1.125" />
         <EntityTypeShape EntityType="MainContextModels.Target" Width="1.5" PointX="3.375" PointY="1" />
         <AssociationConnector Association="MainContextModels.fk_TargetCharts_TargetId" />
+        <EntityTypeShape EntityType="MainContextModels.WorkCalendar" Width="1.5" PointX="0.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

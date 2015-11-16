@@ -34,13 +34,13 @@ namespace Dashboard
             YearComboBox.Focus();
             if (model.AddChartList.Count > 0)
                 AddChartList.SelectedItem = model.AddChartList.First();
-            CommonHelper.InitValidation(SummInput, Month1WeightInput, Month2WeightInput, Month3WeightInput, ColorComboBox, StartColorComboBox);
+            CommonHelper.InitValidation(SummInput, Month1WeightInput, Month2WeightInput, Month3WeightInput, ColorComboBox);
             SetMoveButtonState();
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = CommonHelper.ValidateBindedFileds(Model, SummInput, Month1WeightInput, Month2WeightInput, Month3WeightInput, ColorComboBox, StartColorComboBox);
+            var result = CommonHelper.ValidateBindedFileds(Model, SummInput, Month1WeightInput, Month2WeightInput, Month3WeightInput, ColorComboBox);
             if (result)
             {
                 Model.Save();
@@ -60,6 +60,7 @@ namespace Dashboard
             if (addChartWindow.ShowDialog() == true)
             {
                 Model.AddChartList.Add(item);
+                Model.SortAddChartList();
                 AddChartList.SelectedItem = item;
             }
         }
@@ -69,7 +70,10 @@ namespace Dashboard
             var item = AddChartList.SelectedItem as TargetChartItem;
             var addChartWindow = new AddChartWindow(item, true) { Owner = MainWindow };
             if (addChartWindow.ShowDialog() == true)
+            {
+                Model.SortAddChartList();
                 AddChartList.SelectedItem = item;
+            }
         }
 
         private void AddChartList_MouseDoubleClick(object sender, MouseButtonEventArgs e)

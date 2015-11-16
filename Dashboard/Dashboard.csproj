@@ -107,6 +107,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CalendarPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DayChartPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -154,14 +158,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CalendarPage.xaml.cs">
+      <DependentUpon>CalendarPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DayChartPage.xaml.cs">
       <DependentUpon>DayChartPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\BaseChartModel.cs" />
+    <Compile Include="Models\CalendarModel.cs" />
     <Compile Include="Models\ChartEditModel.cs" />
     <Compile Include="Models\ChartViewModel.cs" />
+    <Compile Include="Models\DayChartModel.cs" />
     <Compile Include="Models\QuarterChartModel.cs" />
     <Compile Include="Models\SetPasswordModel.cs" />
     <Compile Include="Models\TargetEditModel.cs" />

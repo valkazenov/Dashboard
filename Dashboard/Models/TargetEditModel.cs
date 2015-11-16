@@ -63,7 +63,6 @@ namespace Dashboard.Models
             Month2Weight = "";
             Month3Weight = "";
             Color = null;
-            StartColor = null;
             YearList = null;
             QuarterList = null;
             AddChartList = null;
@@ -97,8 +96,7 @@ namespace Dashboard.Models
                 Month2Weight = target.Month2Weight.ToString();
                 Month3Weight = target.Month3Weight.ToString();
                 Color = CommonHelper.StringToColor(target.Color);
-                StartColor = CommonHelper.StringToColor(target.StartColor);
-                AddChartList = new ObservableCollection<TargetChartItem>(context.TargetCharts.Where(c => c.TargetId == Id).OrderBy(c => c.Sort).Select(c => new TargetChartItem()
+                AddChartList = new ObservableCollection<TargetChartItem>(context.TargetCharts.Where(c => c.TargetId == Id).OrderBy(c => c.Coeff).Select(c => new TargetChartItem()
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -151,7 +149,6 @@ namespace Dashboard.Models
             target.Month2Weight = double.Parse(Month2Weight);
             target.Month3Weight = double.Parse(Month3Weight);
             target.Color = CommonHelper.ColorToString(Color.Value);
-            target.StartColor = CommonHelper.ColorToString(StartColor.Value);
             if (Id <= 0)
             {
                 context.Targets.Add(target);
@@ -192,12 +189,6 @@ namespace Dashboard.Models
                     return "Color is required";
                 else return null;
             }
-            else if (IsColumn(columnName, "StartColor"))
-            {
-                if (Color == null)
-                    return "Start color is required";
-                else return null;
-            }
             else return base.CheckField(columnName);
         }
 
@@ -222,6 +213,17 @@ namespace Dashboard.Models
             return CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
         }
 
+        public void SortAddChartList()
+        {
+            if (AddChartList != null)
+            {
+                var list = AddChartList.OrderBy(i => i.Coeff).ToList();
+                AddChartList.Clear();
+                foreach (var item in list)
+                    AddChartList.Add(item);
+            }
+        }
+
         public int Year { get; set; }
         public int Quarter
         {
@@ -243,7 +245,6 @@ namespace Dashboard.Models
         public string Month2Weight { get; set; }
         public string Month3Weight { get; set; }
         public Color? Color { get; set; }
-        public Color? StartColor { get; set; }
         public List<int> YearList { get; private set; }
         public List<int> QuarterList { get; private set; }
         public string Month1Name

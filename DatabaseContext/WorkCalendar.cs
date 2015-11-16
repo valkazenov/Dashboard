@@ -12,22 +12,10 @@ namespace DatabaseContext
     using System;
     using System.Collections.Generic;
     
-    public partial class Target
+    public partial class WorkCalendar
     {
-        public Target()
-        {
-            this.TargetCharts = new HashSet<TargetChart>();
-        }
-    
         public int Id { get; set; }
-        public int Year { get; set; }
-        public int Quarter { get; set; }
-        public decimal Summ { get; set; }
-        public double Month1Weight { get; set; }
-        public double Month2Weight { get; set; }
-        public double Month3Weight { get; set; }
-        public string Color { get; set; }
-    
-        public virtual ICollection<TargetChart> TargetCharts { get; set; }
+        public System.DateTime Day { get; set; }
+        public bool IsHoliday { get; set; }
     }
 }

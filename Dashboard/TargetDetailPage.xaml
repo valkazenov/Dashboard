@@ -30,7 +30,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="1" Grid.Row="1" Text="Year" Style="{StaticResource LabelStyle}"/>
@@ -47,10 +46,8 @@
             <TextBox x:Name="Month3WeightInput" Grid.Column="2" Grid.Row="6" Text="{Binding Path=Month3Weight}" Style="{StaticResource InputStyle}"/>
             <TextBlock Grid.Column="1" Grid.Row="7" Text="Color" Style="{StaticResource LabelStyle}"/>
             <wpfTool:ColorPicker x:Name="ColorComboBox" Grid.Column="2" Grid.Row="7" DisplayColorAndName="True" SelectedColor="{Binding Path=Color}" Style="{StaticResource InputStyle}"/>
-            <TextBlock Grid.Column="1" Grid.Row="8" Text="Start Color" Style="{StaticResource LabelStyle}"/>
-            <wpfTool:ColorPicker x:Name="StartColorComboBox" Grid.Column="2" Grid.Row="8" DisplayColorAndName="True" SelectedColor="{Binding Path=StartColor}" Style="{StaticResource InputStyle}"/>
-            <TextBlock Grid.Column="1" Grid.Row="9" Text="Additional Targets" Style="{StaticResource LabelStyle}"/>
-            <ListView x:Name="AddChartList" Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="2" Height="150" ItemsSource="{Binding Path=AddChartList}" ItemContainerStyle="{StaticResource EmbListViewItemStyle}" Margin="0,1,0,9" MouseDoubleClick="AddChartList_MouseDoubleClick" SelectionChanged="AddChartList_SelectionChanged">
+            <TextBlock Grid.Column="1" Grid.Row="8" Text="Additional Targets" Style="{StaticResource LabelStyle}"/>
+            <ListView x:Name="AddChartList" Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="2" Height="150" ItemsSource="{Binding Path=AddChartList}" ItemContainerStyle="{StaticResource EmbListViewItemStyle}" Margin="0,1,0,9" MouseDoubleClick="AddChartList_MouseDoubleClick" SelectionChanged="AddChartList_SelectionChanged">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource EmbListViewHeaderStyle}">
                         <GridView.Columns>
@@ -67,7 +64,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <StackPanel Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="2" HorizontalAlignment="Left" Orientation="Horizontal">
+            <StackPanel Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="2" HorizontalAlignment="Left" Orientation="Horizontal">
                 <Button x:Name="AddChartButton" Style="{StaticResource UsualButtonStyle}" Click="AddChartButton_Click">
                     <fa:FontAwesome Icon="Plus" />
                 </Button>
@@ -77,14 +74,14 @@
                 <Button x:Name="DeleteChartButton" IsEnabled="{Binding ElementName=AddChartList, Path=SelectedItem, Converter={StaticResource NullToBoolConverter}}" Style="{StaticResource UsualButtonStyle}" Click="DeleteChartButton_Click">
                     <fa:FontAwesome Icon="Minus" />
                 </Button>
-                <Button x:Name="MoveUpChartButton" Style="{StaticResource UsualButtonStyle}" Click="MoveUpChartButton_Click">
+                <Button x:Name="MoveUpChartButton" Style="{StaticResource UsualButtonStyle}" Visibility="Collapsed" Click="MoveUpChartButton_Click">
                     <fa:FontAwesome Icon="AngleDoubleUp" />
                 </Button>
-                <Button x:Name="MoveDownChartButton" Style="{StaticResource UsualButtonStyle}" Click="MoveDownChartButton_Click">
+                <Button x:Name="MoveDownChartButton" Style="{StaticResource UsualButtonStyle}" Visibility="Collapsed" Click="MoveDownChartButton_Click">
                     <fa:FontAwesome Icon="AngleDoubleDown" />
                 </Button>
             </StackPanel>
-            <StackPanel Grid.Column="2" Grid.Row="12" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,20,0,0">
+            <StackPanel Grid.Column="2" Grid.Row="11" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,20,0,0">
                 <Button x:Name="SubmitButton" Content="Submit" Style="{StaticResource ActiveButtonStyle}" IsDefault="True" Click="SubmitButton_Click"/>
                 <Button x:Name="CancelButton" Content="Cancel" Style="{StaticResource UsualButtonStyle}" IsCancel="True" Click="CancelButton_Click"/>
             </StackPanel>

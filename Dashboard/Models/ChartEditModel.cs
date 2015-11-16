@@ -53,7 +53,7 @@ namespace Dashboard.Models
                 double coeff;
                 if (!double.TryParse(Coeff, out coeff))
                     return "Coefficient value is incorrect";
-                if (coeff <= 0)
+                if (coeff < 0)
                     return "Coefficient can be only positive number";
                 else return null;
             }

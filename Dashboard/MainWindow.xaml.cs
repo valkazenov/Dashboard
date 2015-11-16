@@ -24,6 +24,7 @@ namespace Dashboard
         private HomePage homePage;
         private UsersPage usersPage;
         private TargetsPage targetsPage;
+        private CalendarPage calendarPage;
 
         public MainWindow()
         {
@@ -32,6 +33,7 @@ namespace Dashboard
             homePage = new HomePage();
             usersPage = new UsersPage();
             targetsPage = new TargetsPage();
+            calendarPage = new CalendarPage();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -65,7 +67,7 @@ namespace Dashboard
 
         private void MenuPanel_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            SeparatorItem.Width = MenuPanel.ActualWidth - LogoutItem.ActualWidth - HomeItem.ActualWidth - TargetItem.ActualWidth - UserItem.ActualWidth;
+            SeparatorItem.Width = MenuPanel.ActualWidth - LogoutItem.ActualWidth - HomeItem.ActualWidth - TargetItem.ActualWidth - CalendarItem.ActualWidth - UserItem.ActualWidth;
         }
 
         private void TunePageFrame(bool menuVisible, RadioButton menuItem, Page content)
@@ -112,6 +114,12 @@ namespace Dashboard
             TunePageFrame(true, TargetItem, page);
         }
 
+        public void NavigateCalendarPage(int targetId)
+        {
+            calendarPage.ShowPage();
+            TunePageFrame(true, CalendarItem, calendarPage);
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadSettings();
@@ -127,6 +135,11 @@ namespace Dashboard
         private void TargetItem_Click(object sender, RoutedEventArgs e)
         {
             NavigateTargetsPage(-1);
+        }
+
+        private void CalendarItem_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateCalendarPage(-1);
         }
 
         private void UserItem_Click(object sender, RoutedEventArgs e)

@@ -28,5 +28,6 @@ namespace DatabaseContext
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<TargetChart> TargetCharts { get; set; }
         public virtual DbSet<Target> Targets { get; set; }
+        public virtual DbSet<WorkCalendar> WorkCalendar { get; set; }
     }
 }

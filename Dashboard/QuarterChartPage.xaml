@@ -46,7 +46,7 @@
                     </chart:LinearAxis.AxisLabelStyle>
                 </chart:LinearAxis>
             </chart:Chart.Axes>
-            <chart:BarSeries x:Name="Test" DependentValuePath="Value" IndependentValuePath="Name" DataPointStyle="{DynamicResource BarDataPointStyle1}" FontSize="20">
+            <chart:BarSeries x:Name="BarSeries" DependentValuePath="Value" IndependentValuePath="Name" DataPointStyle="{DynamicResource BarDataPointStyle1}" FontSize="20">
                 <chart:BarSeries.Resources>
                     <Style x:Key="BarDataPointStyle1" TargetType="{x:Type chart:BarDataPoint}">
                         <Setter Property="Background" Value="{Binding Path=Color, Converter={StaticResource NullColorToShapeConverter}}"/>

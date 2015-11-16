@@ -10,6 +10,7 @@
         <WrapPanel x:Name="MenuPanel" Grid.Row="0" Focusable="False" SizeChanged="MenuPanel_SizeChanged" Style="{StaticResource MenuStyle}">
             <RadioButton x:Name="HomeItem" Content="Home" Focusable="False" Template="{StaticResource MenuButtonTemplate}" Click="HomeItem_Click"/>
             <RadioButton x:Name="TargetItem" Content="Targets" Focusable="False" Template="{StaticResource MenuButtonTemplate}" Click="TargetItem_Click"/>
+            <RadioButton x:Name="CalendarItem" Content="Calendar" Focusable="False" Template="{StaticResource MenuButtonTemplate}" Click="CalendarItem_Click"/>
             <RadioButton x:Name="UserItem" Content="Users" Focusable="False" Template="{StaticResource MenuButtonTemplate}" Click="UserItem_Click"/>
             <RadioButton x:Name="SeparatorItem" Content="" IsEnabled="False" Template="{StaticResource MenuButtonTemplate}"/>
             <RadioButton x:Name="LogoutItem" Content="Log Out" Focusable="False" Template="{StaticResource MenuButtonTemplate}" Click="LogoutItem_Click"/>

@@ -20,8 +20,7 @@ create table Targets(
   Month1Weight double precision not null,
   Month2Weight double precision not null,
   Month3Weight double precision not null,
-  Color nvarchar(255) not null,
-  StartColor nvarchar(255) not null
+  Color nvarchar(255) not null
 );
 GO
 create unique index TargetQuarterIndex on Targets(Year, Quarter);
@@ -38,4 +37,12 @@ create table TargetCharts(
 GO
 create unique index TargetChartNameIndex on TargetCharts(TargetId,Name);
 create index TargetChartSortIndex on TargetCharts(TargetId,Sort);
+GO
+create table WorkCalendar(
+  Id int IDENTITY(1,1) not null,
+    constraint pk_WorkCalendar primary key (Id),
+  Day datetime2 not null,
+  IsHoliday bit not null);
+GO
+create unique index WorkCalendarDayIndex on WorkCalendar(Day);
 GO

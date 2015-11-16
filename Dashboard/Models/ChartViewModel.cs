@@ -6,11 +6,27 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Media;
 using DatabaseContext;
 using Utilities;
 
 namespace Dashboard.Models
 {
+    public class ChartDataItem
+    {
+        public DateTime Day { get; set; }
+        public double FactSumm { get; set; }
+        public double TotalFactSumm { get; set; }
+        public double FactPercent { get; set; }
+        public double TotalFactPercent { get; set; }
+        public double PlanSumm { get; set; }
+        public double TotalPlanSumm { get; set; }
+        public double PlanPercent { get; set; }
+        public double TotalPlanPercent { get; set; }
+        public string TargetName { get; set; }
+        public Color TargetColor { get; set; }
+    }
+
     public class ChartViewModel : BaseEntityModel
     {
         private ETargetDateType dateType;
@@ -25,6 +41,8 @@ namespace Dashboard.Models
             RealSales = null;
             Target = null;
             TargetCharts = null;
+            CalendarItems = null;
+            ChartDataList = null;
         }
 
         private List<ETargetDateType> CreateDateTypeList()
@@ -86,8 +104,8 @@ namespace Dashboard.Models
                         if (summ != 0)
                         {
                             if (!result.ContainsKey(date))
-                                result.Add(date, summ);
-                            else result[date] = result[date] + summ;
+                                result.Add(date, 0);
+                            result[date] = Math.Round(result[date] + summ, 2);
                         }
                     }
                 }
@@ -99,14 +117,112 @@ namespace Dashboard.Models
         private Target DoLoadTarget()
         {
             var quarter = (WorkDate.Month + 2) / 3;
-            using (var context = new MainContext())
+            using (var context = CommonHelper.CreateMainContext())
                 return context.Targets.Where(t => t.Year == WorkDate.Year && t.Quarter == quarter).FirstOrDefault();
         }
 
         private List<TargetChart> DoLoadTargetCharts()
         {
-            using (var context = new MainContext())
+            using (var context = CommonHelper.CreateMainContext())
                 return context.TargetCharts.Where(c => c.TargetId == Target.Id).ToList();
+        }
+
+        private Dictionary<DateTime, bool> DoLoadCalendarItems()
+        {
+            using (var context = CommonHelper.CreateMainContext())
+            {
+                var result = new Dictionary<DateTime, bool>();
+                foreach (var item in context.WorkCalendar)
+                    result.Add(item.Day,item.IsHoliday);
+                return result;
+            }
+        }
+
+        private List<DateTime> GetMonthWorkDays(int month)
+        {
+            var result = new List<DateTime>();
+            for (var i = 1; i <= DateTime.DaysInMonth(WorkDate.Year, month); i++)
+            {
+                var day = new DateTime(WorkDate.Year, month, i);
+                bool addKey;
+                if (CalendarItems.ContainsKey(day))
+                    addKey = !CalendarItems[day];
+                else addKey = day.DayOfWeek != DayOfWeek.Saturday && day.DayOfWeek != DayOfWeek.Sunday;
+                if (addKey) result.Add(day);
+            }
+            return result;
+        }
+
+        protected void SplitSummByMonths(double summ, out double summ1, out double summ2, out double summ3)
+        {
+            summ1 = 0; summ2 = 0; summ3 = 0;
+            if (summ == 0) return;
+            var totalCount = Target.Month1Weight + Target.Month2Weight + Target.Month3Weight;
+            summ1 = Math.Round(summ / totalCount * Target.Month1Weight, 2);
+            summ -= summ1; totalCount -= Target.Month1Weight;
+            summ2 = Math.Round(summ / totalCount * Target.Month2Weight, 2);
+            summ3 = summ - summ2;
+        }
+
+        private void FillTargetParams(ChartDataItem item)
+        {
+            if (Target == null) return;
+            item.TargetName = null; item.TargetColor = Colors.Transparent;
+            var coeff = item.TotalFactSumm / item.TotalPlanSumm;
+            foreach (var addTarget in TargetCharts.OrderByDescending(c => c.Coeff).ToList())
+            {
+                if (coeff >= addTarget.Coeff)
+                {
+                    item.TargetName = addTarget.Name;
+                    item.TargetColor = CommonHelper.StringToColor(addTarget.Color);
+                    break;
+                }
+            }
+        }
+
+        private List<ChartDataItem> CalculateChartDataList()
+        {
+            var result = new List<ChartDataItem>();
+            var targetSumm = Target != null ? Convert.ToDouble(Target.Summ) : 0;
+            double planSumm1, planSumm2, planSumm3;
+            SplitSummByMonths(targetSumm, out planSumm1, out planSumm2, out planSumm3);
+            var startMonth = (Quarter - 1) * 3;
+            var totalFactSumm = 0.0; var prevTotalFactPercent = 0.0;
+            var totalPlanSumm = 0.0; var prevTotalPlanPercent = 0.0;
+            for (var i = startMonth + 1; i <= WorkDate.Month; i++)
+            {
+                var monthPlanSumm = i == startMonth + 1 ? planSumm1 : i == startMonth + 2 ? planSumm2 : planSumm3;
+                var stopDay = i == WorkDate.Month ? WorkDate.Day : DateTime.DaysInMonth(WorkDate.Year, i);
+                var days = GetMonthWorkDays(i);
+                var dayCount = 0;
+                foreach (var day in days)
+                {
+                    if (day.Day <= stopDay)
+                    {
+                        // Fact
+                        var item = new ChartDataItem() { Day = day };
+                        item.FactSumm = RealSales.ContainsKey(day) ? RealSales[day] : 0;
+                        totalFactSumm = Math.Round(totalFactSumm + item.FactSumm, 2);
+                        item.TotalFactSumm = totalFactSumm;
+                        item.TotalFactPercent = targetSumm != 0 ? Math.Round(item.TotalFactSumm / targetSumm * 100, 2) : 0;
+                        item.FactPercent = Math.Round(item.TotalFactPercent - prevTotalFactPercent, 2);
+                        prevTotalFactPercent = item.TotalFactPercent;
+                        // Plan
+                        item.PlanSumm = Math.Round(monthPlanSumm / (days.Count - dayCount), 2);
+                        monthPlanSumm = Math.Round(monthPlanSumm - item.PlanSumm, 2);
+                        totalPlanSumm = Math.Round(totalPlanSumm + item.PlanSumm, 2);
+                        item.TotalPlanSumm = totalPlanSumm;
+                        item.TotalPlanPercent = targetSumm != 0 ? Math.Round(item.TotalPlanSumm / targetSumm * 100, 2) : 0;
+                        item.PlanPercent = Math.Round(item.TotalPlanPercent - prevTotalPlanPercent, 2);
+                        prevTotalPlanPercent = item.TotalPlanPercent;
+                        // Target
+                        FillTargetParams(item);
+                        result.Add(item);
+                        dayCount++;
+                    }
+                }
+            }
+            return result;
         }
 
         public async void Calculate()
@@ -117,6 +233,8 @@ namespace Dashboard.Models
             if (Target != null)
                 TargetCharts = await Task.Run<List<TargetChart>>(() => DoLoadTargetCharts());
             else TargetCharts = null;
+            CalendarItems = await Task.Run<Dictionary<DateTime, bool>>(() => DoLoadCalendarItems());
+            ChartDataList = CalculateChartDataList();
             if (OnEndCalculate != null) OnEndCalculate();
         }
 
@@ -162,7 +280,9 @@ namespace Dashboard.Models
         public Dictionary<DateTime, double> RealSales { get; private set; }
         public Target Target { get; private set; }
         public List<TargetChart> TargetCharts { get; private set; }
-        
+        public List<ChartDataItem> ChartDataList { get; private set; }
+        public Dictionary<DateTime, bool> CalendarItems { get; private set; }
+
         public event Action OnBeginCalculate;
         public event Action OnEndCalculate;
     }

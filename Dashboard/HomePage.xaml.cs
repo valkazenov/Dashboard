@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Windows.Markup;
 using Dashboard.Models;
 
 namespace Dashboard
@@ -22,6 +23,7 @@ namespace Dashboard
     /// </summary>
     public partial class HomePage : Page
     {
+        private ChartViewModel model;
         private QuarterChartPage quarterPage;
         private DayChartPage dayPage;
         private DispatcherTimer refreshTimer;
@@ -31,22 +33,31 @@ namespace Dashboard
             InitializeComponent();
             refreshTimer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(Properties.Settings.Default.RefreshInterval) };
             refreshTimer.Tick += (s, e) => Model.Calculate();
-            var model = new ChartViewModel();
+            model = new ChartViewModel();
             model.OnBeginCalculate += BeginCalculate;
             model.OnEndCalculate += EndCalculate;
             quarterPage = new QuarterChartPage(model);
             dayPage = new DayChartPage(model);
             model.Load();
             ChartViewForm.DataContext = model;
-            ChartContainer.Content = quarterPage;
+            ChartContainer.Content = /*quarterPage*/dayPage;
             refreshTimer.Start();
         }
 
         private void SlideButton_Clik(object sender, RoutedEventArgs e)
         {
             if (ChartContainer.Content == quarterPage)
+            {
+                dayPage = new DayChartPage(model);
+                dayPage.Refresh();
                 ChartContainer.Content = dayPage;
-            else ChartContainer.Content = quarterPage;
+            }
+            else
+            {
+                quarterPage = new QuarterChartPage(model);
+                quarterPage.Refresh();
+                ChartContainer.Content = quarterPage;
+            }
         }
 
         private void BeginCalculate()
